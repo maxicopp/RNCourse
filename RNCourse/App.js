@@ -37,7 +37,6 @@ export default function App() {
         <FlatList
           data={courseGoals}
           renderItem={(itemData) => {
-            console.log(itemData);
             return (
               <View key={itemData.index} style={styles.goalItem}>
                 <Text style={styles.goalText}>{itemData.item.text}</Text>
