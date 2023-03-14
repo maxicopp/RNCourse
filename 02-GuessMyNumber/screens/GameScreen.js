@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import NumberContainer from '../components/game/NumberContainer';
 import ButtonGroup from '../components/ui/ButtonGroup';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
-import PrimaryButton from '../components/ui/PrimaryButton';
 import Title from '../components/ui/Title';
 
 function generateRandomBetween(min, max, exclude) {
@@ -65,12 +65,12 @@ function GameScreen({ userNumber, onGameOver }) {
           buttonData={[
             {
               id: 'btn1',
-              label: '-',
+              label: <Ionicons name="md-remove" size={24} color="white" />,
               onPress: nextGuessHanlder.bind(this, 'lower'),
             },
             {
               id: 'btn2',
-              label: '+',
+              label: <Ionicons name="md-add" size={24} color="white" />,
               onPress: nextGuessHanlder.bind(this, 'greater'),
             },
           ]}
