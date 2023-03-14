@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import NumberContainer from '../components/game/NumberContainer';
+import ButtonGroup from '../components/ui/ButtonGroup';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
 import PrimaryButton from '../components/ui/PrimaryButton';
@@ -57,15 +58,23 @@ function GameScreen({ userNumber, onGameOver }) {
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText>Higher or lower?</InstructionText>
-        <View>
-          <PrimaryButton onPress={nextGuessHanlder.bind(this, 'lower')}>
-            -
-          </PrimaryButton>
-          <PrimaryButton onPress={nextGuessHanlder.bind(this, 'greater')}>
-            +
-          </PrimaryButton>
-        </View>
+        <InstructionText style={styles.instructionText}>
+          Higher or lower?
+        </InstructionText>
+        <ButtonGroup
+          buttonData={[
+            {
+              id: 'btn1',
+              label: '-',
+              onPress: nextGuessHanlder.bind(this, 'lower'),
+            },
+            {
+              id: 'btn2',
+              label: '+',
+              onPress: nextGuessHanlder.bind(this, 'greater'),
+            },
+          ]}
+        />
       </Card>
       {/* <View>LOG ROUNDS</View> */}
     </View>
@@ -78,5 +87,8 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+  },
+  instructionText: {
+    marginBottom: 12,
   },
 });
