@@ -6,6 +6,7 @@ import ButtonGroup from '../components/ui/ButtonGroup';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
 import Title from '../components/ui/Title';
+import GuessLogItem from '../components/game/GuessLogItem';
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -87,7 +88,12 @@ function GameScreen({ userNumber, onGameOver }) {
         <FlatList
           data={guessRounds}
           keyExtractor={(item) => item.toString()}
-          renderItem={({ item }) => <Text>{item}</Text>}
+          renderItem={({ item, index }) => (
+            <GuessLogItem
+              guess={item}
+              roundNumber={guessRounds.length - index}
+            />
+          )}
         />
       </View>
     </View>
