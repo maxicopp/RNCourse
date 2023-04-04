@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import {
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
   TextInput,
   View,
@@ -43,33 +45,40 @@ function StartGameScreen({ onPickNumber }) {
   const marginTopDistance = height < 380 ? 30 : 100;
 
   return (
-    <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
-      <Title>Guess My Number</Title>
-      <Card>
-        <InstructionText>Enter a Number</InstructionText>
-        <TextInput
-          style={styles.numberInput}
-          maxLength={2}
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-          onChangeText={numberInputHandler}
-          value={enteredNumber}
-        />
-        <ButtonGroup
-          buttonData={[
-            { id: 'btn3', label: 'Reset', onPress: resetInputHandler },
-            { id: 'btn4', label: 'Confirm', onPress: confirmInputHandler },
-          ]}
-        />
-      </Card>
-    </View>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+          <Title>Guess My Number</Title>
+          <Card>
+            <InstructionText>Enter a Number</InstructionText>
+            <TextInput
+              style={styles.numberInput}
+              maxLength={2}
+              keyboardType="number-pad"
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={numberInputHandler}
+              value={enteredNumber}
+            />
+            <ButtonGroup
+              buttonData={[
+                { id: 'btn3', label: 'Reset', onPress: resetInputHandler },
+                { id: 'btn4', label: 'Confirm', onPress: confirmInputHandler },
+              ]}
+            />
+          </Card>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     alignItems: 'center',
