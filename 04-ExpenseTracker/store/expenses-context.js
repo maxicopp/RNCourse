@@ -5,7 +5,7 @@ const DUMMY_EXPENSES = [
     id: 'e1',
     description: 'A pair of shoes',
     amount: 59.99,
-    date: new Date('2021-12-19'),
+    date: new Date('2023-04-18'),
   },
   {
     id: 'e2',
@@ -98,7 +98,7 @@ function expensesReducer(state, action) {
   switch (action.type) {
     case 'ADD':
       const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state];
+      return [{ ...action.payload, id }, ...state];
     case 'UPDATE':
       const updatableExpenseIndex = state.findIndex(
         (expense) => expense.id === action.payload.id
@@ -128,10 +128,21 @@ function ExpensesContextProvider({ children }) {
   }
 
   function updateExpense(id, expenseData) {
-    dispatch({ type: 'UPDATE', payload: { id: id, data: expenseData } });
+    dispatch({ type: 'UPDATE', payload: { id, data: expenseData } });
   }
 
-  return <ExpensesContext.Provider>{children}</ExpensesContext.Provider>;
+  const value = {
+    expenses: expensesState,
+    addExpense,
+    deleteExpense,
+    updateExpense,
+  };
+
+  return (
+    <ExpensesContext.Provider value={value}>
+      {children}
+    </ExpensesContext.Provider>
+  );
 }
 
 export default ExpensesContextProvider;
