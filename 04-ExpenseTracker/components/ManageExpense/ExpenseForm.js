@@ -21,7 +21,7 @@ function ExpenseForm() {
           onChangeText: () => {},
         }}
       />
-      <Input label="Description" />
+      <Input label="Description" textInputConfig={{ multiline: true }} />
     </View>
   );
 }
