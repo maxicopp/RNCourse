@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { ExpensesContext } from '../store/expenses-context';
 import { GlobalStyles } from '../constants/styles';
+import { storeExpense } from '../util/http';
 import ExpenseForm from '../components/ManageExpense/ExpenseForm';
 import IconButton from '../components/UI/IconButton';
 
@@ -35,6 +36,7 @@ function ManageExpense({ route, navigation }) {
     if (isEditing) {
       expensesCtx.updateExpense(editedExpenseId, expenseData);
     } else {
+      storeExpense(expenseData);
       expensesCtx.addExpense(expenseData);
     }
 
