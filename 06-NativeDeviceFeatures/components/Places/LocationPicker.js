@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
@@ -14,6 +15,8 @@ function LocationPicker() {
   const [pickedLocation, setPickedLocation] = useState();
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
+
+  const navigation = useNavigation();
 
   async function verifyPermissions() {
     if (
@@ -49,12 +52,13 @@ function LocationPicker() {
     });
   }
 
-  function pickOnMapHandler() {}
+  function pickOnMapHandler() {
+    navigation.navigate('Map');
+  }
 
   let locationPreview = <Text>No location picked yet.</Text>;
 
   if (pickedLocation) {
-    console.log(getMapPreview(pickedLocation.lat, pickedLocation.lng));
     locationPreview = (
       <Image
         style={styles.image}
