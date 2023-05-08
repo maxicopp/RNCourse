@@ -8,7 +8,12 @@ import OutlinedButton from '../components/UI/OutlinedButton';
 function PlaceDetails({ route, navigation }) {
   const [fetchedPlace, setFetchedPlace] = useState();
 
-  function showOnMapHandler() {}
+  function showOnMapHandler() {
+    navigation.navigate('Map', {
+      initialLat: fetchedPlace.location.lat,
+      initialLng: fetchedPlace.location.lng,
+    });
+  }
 
   const selectedPlaceId = route.params.placeId;
 
