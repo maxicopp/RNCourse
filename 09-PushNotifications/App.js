@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, View } from 'react-native';
+import { Alert, Button, Platform, StyleSheet, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
@@ -15,9 +15,35 @@ Notifications.setNotificationHandler({
 
 export default function App() {
   useEffect(() => {
-    Notifications.getExpoPushTokenAsync().then((pushTokenData) => {
-      console.log(pushTokenData);
-    });
+    async function configurePushNotifications() {
+      const { status } = await Notifications.getPermissionsAsync();
+      let finalStatus = status;
+
+      if (finalStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== 'granted') {
+        Alert.alert(
+          'Permission required',
+          'Push notifications need the appropiate permissions.'
+        );
+        return;
+      }
+
+      const pushTokenData = await Notifications.getExpoPushTokenAsync();
+      console.log('Push token data: ', pushTokenData);
+
+      if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.DEFAULT,
+        });
+      }
+    }
+
+    configurePushNotifications();
   }, []);
 
   useEffect(() => {
