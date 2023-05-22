@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Alert, Button, Platform, StyleSheet, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
@@ -14,6 +14,8 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
+  const pushToken = useRef('');
+
   useEffect(() => {
     async function configurePushNotifications() {
       const { status } = await Notifications.getPermissionsAsync();
@@ -34,6 +36,7 @@ export default function App() {
 
       const pushTokenData = await Notifications.getExpoPushTokenAsync();
       console.log('Push token data: ', pushTokenData);
+      pushToken.current = pushTokenData.data;
 
       if (Platform.OS === 'android') {
         Notifications.setNotificationChannelAsync('default', {
@@ -92,11 +95,34 @@ export default function App() {
     });
   }
 
+  function sendPushNotificationHandler() {
+    fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        to: pushToken.current,
+        title: 'Test - sent from a device',
+        body: 'This is a test!',
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log('Push notification response:', data))
+      .catch((error) =>
+        console.error('Error sending push notification:', error)
+      );
+  }
+
   return (
     <View style={styles.container}>
       <Button
         title="Schedule Notification"
         onPress={scheduleNotificationHandler}
+      />
+      <Button
+        title="Send Push Notification"
+        onPress={sendPushNotificationHandler}
       />
       <StatusBar style="auto" />
     </View>
