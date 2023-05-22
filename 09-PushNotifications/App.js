@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, View } from 'react-native';
 import * as Notifications from 'expo-notifications';
@@ -13,7 +14,30 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log('NOTIFICATION RECEIVED');
+        console.log(notification);
+
+        const data = notification?.request?.content?.data;
+
+        if (data) {
+          const { userName } = data;
+          console.log('User Name:', userName);
+        } else {
+          console.log('Notification data object is null or undefined');
+        }
+      }
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   function scheduleNotificationHandler() {
+    console.log('function');
     Notifications.scheduleNotificationAsync({
       content: {
         title: 'My first local notification',
