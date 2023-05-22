@@ -15,11 +15,8 @@ Notifications.setNotificationHandler({
 
 export default function App() {
   useEffect(() => {
-    const subscription = Notifications.addNotificationReceivedListener(
+    const receivedSubscription = Notifications.addNotificationReceivedListener(
       (notification) => {
-        console.log('NOTIFICATION RECEIVED');
-        console.log(notification);
-
         const data = notification?.request?.content?.data;
 
         if (data) {
@@ -31,13 +28,26 @@ export default function App() {
       }
     );
 
+    const responseSubscription =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        const data = response?.notification?.request?.content?.data;
+
+        if (data) {
+          const { userName } = data;
+          console.log('User tapped the notification:', response);
+          console.log('User Name:', userName);
+        } else {
+          console.log('Notification data object is null or undefined');
+        }
+      });
+
     return () => {
-      subscription.remove();
+      receivedSubscription.remove();
+      responseSubscription.remove();
     };
   }, []);
 
   function scheduleNotificationHandler() {
-    console.log('function');
     Notifications.scheduleNotificationAsync({
       content: {
         title: 'My first local notification',
